@@ -111,7 +111,7 @@ chrome.webNavigation.onCommitted.addListener((tab) => {
 	}
 
 	// This is a bit of a workaround, as chrome doesn't seem to let me tell the difference between forward / back easily (forward is not allowed)
-	if(tab.transitionQualifier.indexOf("forward_back") !== -1) {
+	if(tab.transitionQualifier && tab.transitionQualifier.indexOf("forward_back") !== -1) {
 		let parent = tree.getActiveNode().getParent();
 		if(url === parent.getLocation()) {
 			// This means the user went back, which doesn't violate tree coherence.

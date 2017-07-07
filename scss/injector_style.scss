@@ -1,0 +1,59 @@
+@font-face {
+	src: url('chrome-extension://__MSG_@@extension_id__/font/Ubuntu-B.ttf');
+	font-family: "Ubuntu Bold"
+}
+
+@font-face {
+	src: url('chrome-extension://__MSG_@@extension_id__/font/Ubuntu-L.ttf');
+	font-family: "Ubuntu Light"
+}
+
+$frame-width: 400px;
+$frame-height: 250px;
+$frame-radius: 5px;
+
+$highlight-color: #222;
+$background-color: #eee;
+
+$title-bar-height: 30px;
+$title-size: 20px;
+$browser-height: $frame-height - $title-bar-height;
+
+#shrub-injection-frame {
+	font-family: "Ubuntu Light";
+	position: fixed;
+	top: 50px;
+	left: 50px;
+	border-radius: $frame-radius;
+	overflow: hidden;
+	z-index: -99;
+	visibility: hidden;
+	width: $frame-width;
+	height: $frame-height;
+	background-color: $background-color;
+
+	#title-bar {
+		width: 100%;
+		height: $title-bar-height;
+		color: $highlight-color;
+		font-size: $title-size;
+		display: flex;
+		align-items: center;
+		padding: 5px;
+		box-sizing: border-box;
+
+		h1 {
+			font-size: $title-size;
+			margin: 0px;
+		}
+	}
+
+	#browser {
+		width: 100%;
+		height: $browser-height;
+	}
+
+	* {
+		padding: 0px;
+	}
+}

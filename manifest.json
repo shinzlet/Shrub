@@ -1,0 +1,29 @@
+{
+	"manifest_version": 2,
+	"name": "Shrub",
+	"version": "0.1.0",
+
+	"permissions": [
+		"activeTab",
+		"webNavigation",
+		"unlimitedStorage"
+	],
+	"icons": {
+		"128": "shrub-icon-128.png",
+		"16": "shrub-icon-16.png"
+	},
+	"content_scripts":[
+		{
+			"matches": ["http://*/*", "https://*/*"],
+			"css": ["css/injector_style.css"],
+			"js": ["js/injector.js"]
+		}
+	],
+	"background": {
+		"scripts": ["js/background.js"]
+	},
+	"web_accessible_resources": [
+		"html/*",
+		"font/*"
+	]
+}

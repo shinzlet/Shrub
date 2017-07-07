@@ -11,7 +11,7 @@ function Node(par, loc) {
 			return this.parent;
 		},
 		hasChildren: function() {
-			return children.length > 0;
+			return children === undefined;
 		},
 		getChildren: function() {
 			return children;
@@ -21,6 +21,9 @@ function Node(par, loc) {
 		},
 		getLocation: function() {
 			return this.location;
+		},
+		setLocation: function(newLocation) {
+			this.location = newLocation;
 		}
 	};
 
@@ -55,7 +58,7 @@ var trees = {}
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
-		let name = `${sender.tab.windowId}${sender.tab.id}`;
+		let name = `${sender.tab.id}`;
 		let url = sender.tab.url;
 		switch(request.action) {
 			default: break;
@@ -67,7 +70,7 @@ chrome.runtime.onMessage.addListener(
 	Creates a new history tree.
 */
 function beginTree(name, url) {
-	trees[name] = new Tree( new Node(null, url) );
+	trees[name] = new Tree( new Node(undefined, url) );
 }
 
 /*
@@ -75,7 +78,7 @@ function beginTree(name, url) {
 	tree is created for this tab.
 */
 chrome.tabs.onCreated.addListener((tab) => {
-	let name = `${tab.windowId}${tab.id}`;
+	let name = `${tab.id}`;
 	let url = tab.url;
 	beginTree(name, url);
 });
@@ -85,7 +88,7 @@ chrome.tabs.onCreated.addListener((tab) => {
 	just deletes the stray tree.
 */
 chrome.tabs.onRemoved.addListener((tab) => {
-	let name = `${tab.windowId}${tab.id}`;
+	let name = `${tab.id}`;
 	delete trees[name];
 });
 
@@ -96,9 +99,15 @@ chrome.tabs.onRemoved.addListener((tab) => {
 
 	This also is run when the user presses the forward or back button, which requires
 	a different protocol. I'm not going to go over it twice, it's commented below.
+
+	Notes:
+		Redirect links that do not stay in the browser history will cause the back detection to misfire,
+		causing a forward button event. This destroys the tree, and is heavily undesirable. Because of this,
+		we must check for all client_redirect transitionQualifiers, and if one is detected we have to replace the
+		location of the last node with the new url, rather than appending a node.
 */
 chrome.webNavigation.onCommitted.addListener((tab) => {
-	let name = `${tab.windowId}${tab.id}`;
+	let name = `${tab.tabId}`;
 	let url = tab.url;
 	let transition = tab.transitionType;
 	let tree = trees[name];
@@ -107,31 +116,43 @@ chrome.webNavigation.onCommitted.addListener((tab) => {
 		// This might happen in mass tab restoration, or in the session where the extension was first installed,
 		// As neither of those events would neccessarily lead to the new tab creation listener.
 		beginTree(name, url);
+		console.log("1 | Tree created");
 		return; // If we let the last half of the code run we risk duplicating this node.
 	}
 
 	// This is a bit of a workaround, as chrome doesn't seem to let me tell the difference between forward / back easily (forward is not allowed)
-	if(tab.transitionQualifier && tab.transitionQualifier.indexOf("forward_back") !== -1) {
+	if(tab.transitionQualifiers && tab.transitionQualifiers.indexOf("forward_back") !== -1) {
 		let parent = tree.getActiveNode().getParent();
-		if(url === parent.getLocation()) {
+
+		if(parent && url === parent.getLocation()) {
 			// This means the user went back, which doesn't violate tree coherence.
 			tree.setActiveNode(parent); // All we have to do is step back.
+			console.log("2 | Backed up");
 		} else {
 			// This only happens when the user decides to go forwards or back beyond the tree root.
 			delete trees[name]; // The tree is dead, now. Are you happy?
 			beginTree(name, url); // We still want a tree, though.
-			return; // the transition is still technically 'link', so we aren't going to risk node duplication
+			console.log("3 | Deleted tree");
 		}
+
+		return; // the transition is either 'link' or 'typed', so we aren't going to risk node duplication / removal
 	}
 
 	switch(transition) {
 		case "link":
-			let child = new Node(tree.getActiveNode, url);
-			tree.appendChildToActive(child);
+			if(tab.transitionQualifiers && tab.transitionQualifiers.indexOf("client_redirect") !== -1) {
+				tree.getActiveNode().setLocation(url);
+				console.log("4.1 | Redirect link");
+			} else {
+				let child = new Node(tree.getActiveNode(), url);
+				tree.appendChildToActive(child);
+				console.log("4 | Link");
+			}
 			break;
 		case "typed":
 			delete trees[name]; // Manually navigating away from the tree severs it from the structure
 			beginTree(name, url);
+			console.log("5 | Typed");
 			break;
 	}
 });

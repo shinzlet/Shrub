@@ -1,5 +1,5 @@
 let UI = {
-	elem: null, // elem is set to a function in initializeUI
+	elem: function(){return undefined}, // elem is set to a function in initializeUI
 	style: () => {
 		return UI.elem().style;
 	},

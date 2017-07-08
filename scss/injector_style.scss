@@ -1,26 +1,31 @@
 @font-face {
-	src: url('chrome-extension://__MSG_@@extension_id__/font/Ubuntu-B.ttf');
-	font-family: "Ubuntu Bold"
+	src: url('chrome-extension://pnnlppoeoflpaokcoahkmkoalcohkgja/font/Ubuntu-B.ttf');
+	font-family: "Ubuntu Bold";
 }
 
 @font-face {
-	src: url('chrome-extension://__MSG_@@extension_id__/font/Ubuntu-L.ttf');
-	font-family: "Ubuntu Light"
+	src: url('chrome-extension://pnnlppoeoflpaokcoahkmkoalcohkgja/font/Ubuntu-L.ttf');
+	font-family: "Ubuntu Light";
 }
 
-$frame-width: 400px;
+$frame-width: 250px;
 $frame-height: 250px;
-$frame-radius: 5px;
+$frame-radius: 0px;
 
-$highlight-color: #222;
-$background-color: #eee;
+$highlight-color: #ff0;
+$title-color: rgba(0, 0, 0, 0.7);
+$title-text-color: #fff;
+$browser-color: #383838;
 
 $title-bar-height: 30px;
 $title-size: 20px;
 $browser-height: $frame-height - $title-bar-height;
+$link-height: 25px;
+$link-color: #444;
+$link-font-size: 15px;
+$link-padding: 3px;
 
 #shrub-injection-frame {
-	font-family: "Ubuntu Light";
 	position: fixed;
 	top: 50px;
 	left: 50px;
@@ -30,17 +35,18 @@ $browser-height: $frame-height - $title-bar-height;
 	visibility: hidden;
 	width: $frame-width;
 	height: $frame-height;
-	background-color: $background-color;
 
-	#title-bar {
+	#shrub-title-bar {
 		width: 100%;
 		height: $title-bar-height;
-		color: $highlight-color;
+		color: $title-text-color;
 		font-size: $title-size;
 		display: flex;
 		align-items: center;
 		padding: 5px;
 		box-sizing: border-box;
+		background-color: $title-color;
+		font-family: "Ubuntu Light";
 
 		h1 {
 			font-size: $title-size;
@@ -48,9 +54,30 @@ $browser-height: $frame-height - $title-bar-height;
 		}
 	}
 
-	#browser {
+	#shrub-browser {
 		width: 100%;
 		height: $browser-height;
+		background-color: $browser-color;
+		overflow: scroll;
+
+		.shrub-browser-link {
+			font-family: "Ubuntu Bold";
+			width: 100%;
+			height: $link-height;
+			display: flex;
+			align-items: center;
+			font-size: $link-font-size;
+			color: $highlight-color;
+			padding: $link-padding;
+
+			p {
+				float: right;
+			}
+		}
+
+		.shrub-browser-link:nth-child(even) {
+			background-color: #444;
+		}
 	}
 
 	* {

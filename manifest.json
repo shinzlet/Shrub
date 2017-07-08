@@ -6,7 +6,8 @@
 	"permissions": [
 		"activeTab",
 		"webNavigation",
-		"unlimitedStorage"
+		"http://fonts.googleapis.com/",
+		"https://fonts.googleapis.com/"
 	],
 	"icons": {
 		"128": "shrub-icon-128.png",
@@ -14,7 +15,7 @@
 	},
 	"content_scripts":[
 		{
-			"matches": ["http://*/*", "https://*/*"],
+			"matches": ["<all_urls>"],
 			"css": ["css/injector_style.css"],
 			"js": ["js/injector.js"]
 		}
@@ -24,6 +25,6 @@
 	},
 	"web_accessible_resources": [
 		"html/*",
-		"font/*"
+		"/font/*"
 	]
 }

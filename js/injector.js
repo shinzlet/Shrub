@@ -16,7 +16,27 @@ let UI = {
 
 		UI.visible = !UI.visible;
 	},
-	visible: false
+	addLink: function(name, url) {
+		var link = document.createElement("div");
+		link.className = "shrub-browser-link";
+
+		var inner = document.createElement("div");
+		inner.className = "shrub-browser-link-text";
+
+		var title = document.createElement("p");
+		title.innerHTML = name;
+
+		var loc = document.createElement("p");
+		loc.innerHTML = url;
+
+		inner.appendChild(title);
+		inner.appendChild(loc);
+
+		link.appendChild(inner);
+		UI.browser().appendChild(link);
+	},
+	visible: false,
+	hover: false
 }
 
 function KeyHandler(keyNames, callback) {
@@ -64,6 +84,11 @@ buildUI();
 
 // Event listeners:
 new KeyHandler(["AltLeft", "AltRight"], UI.toggle);
+document.body.addEventListener("click", function() { // If the user clicks outside of the interface, close it
+	if(UI.visible && !UI.hover) {
+		UI.toggle();
+	}
+});
 
 // Loads ui from ui.html, then sends the html string into the injector to put it into the page
 function buildUI() {
@@ -106,9 +131,11 @@ function initializeUI() {
 
 	UI.browser().onmouseover = () => {
 		document.body.style.overflow = "hidden";
+		UI.hover = true;
 	}
 
 	UI.browser().onmouseout = () => {
 		document.body.style.overflow = "scroll";
+		UI.hover = false;
 	}
 }

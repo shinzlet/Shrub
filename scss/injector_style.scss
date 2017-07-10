@@ -11,16 +11,16 @@
 $frame-width: 250px;
 $frame-radius: 5px;
 
-$highlight-color: #1DD34B;
-$frame-color: rgba(0, 0, 0, 0.7);
+$highlight-color: #00F8FF;
+$frame-color: rgba(0, 0, 0, 0.6);
 $link-text-color: #aaa;
 $link-title-color: #fff;
 $browser-color: #383838;
 
 $title-bar-height: 30px;
 $title-size: 20px;
-$link-height: 50px;
-$browser-height: 8 * $link-height;
+$link-height: 45px;
+$browser-height: 3.5 * $link-height; // If it's a whole multiple it isn't clear that the box is scrollable
 $link-highlight-color: #444;
 $link-font-size: 15px;
 $link-right-margin: 7px;
@@ -44,13 +44,19 @@ $link-right-margin: 7px;
 		font-size: $title-size;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		padding: 5px;
 		box-sizing: border-box;
 		font-family: "Ubuntu Medium";
 
-		h1 {
+		#shrub-title-text {
 			font-size: $title-size;
 			margin: 0px;
+		}
+
+		#shrub-version-text {
+			font-family: "Ubuntu Light Italic";
+			text-decoration: none;
 		}
 	}
 
@@ -81,6 +87,7 @@ $link-right-margin: 7px;
 				p:nth-child(1) {
 					font-family: "Ubuntu Medium";
 					color: $link-title-color;
+					margin-bottom: -3px;
 				}
 			}
 

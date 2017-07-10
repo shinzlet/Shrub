@@ -10,8 +10,8 @@
 		"https://fonts.googleapis.com/"
 	],
 	"icons": {
-		"128": "shrub-icon-128.png",
-		"16": "shrub-icon-16.png"
+		"128": "icons/shrub-icon-128.png",
+		"16": "icons/shrub-icon-16.png"
 	},
 	"content_scripts":[
 		{

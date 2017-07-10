@@ -1,50 +1,60 @@
 @font-face {
-  src: url("chrome-extension://pnnlppoeoflpaokcoahkmkoalcohkgja/font/Ubuntu-B.ttf");
-  font-family: "Ubuntu Bold"; }
+  src: url("chrome-extension://keemkifacmkjeminmocpnjcdkhilemgi/font/Ubuntu-M.ttf");
+  font-family: "Ubuntu Medium"; }
 @font-face {
-  src: url("chrome-extension://pnnlppoeoflpaokcoahkmkoalcohkgja/font/Ubuntu-L.ttf");
-  font-family: "Ubuntu Light"; }
+  src: url("chrome-extension://keemkifacmkjeminmocpnjcdkhilemgi/font/Ubuntu-LI.ttf");
+  font-family: "Ubuntu Light Italic"; }
 #shrub-injection-frame {
+  -webkit-font-smoothing: antialiased;
   position: fixed;
   top: 50px;
   left: 50px;
-  border-radius: 0px;
+  border-radius: 5px;
   overflow: hidden;
   z-index: -99;
   visibility: hidden;
   width: 250px;
-  height: 250px; }
+  background-color: rgba(0, 0, 0, 0.7); }
   #shrub-injection-frame #shrub-title-bar {
     width: 100%;
     height: 30px;
-    color: #fff;
+    color: #1DD34B;
     font-size: 20px;
     display: flex;
     align-items: center;
     padding: 5px;
     box-sizing: border-box;
-    background-color: rgba(0, 0, 0, 0.7);
-    font-family: "Ubuntu Light"; }
+    font-family: "Ubuntu Medium"; }
     #shrub-injection-frame #shrub-title-bar h1 {
       font-size: 20px;
       margin: 0px; }
   #shrub-injection-frame #shrub-browser {
     width: 100%;
-    height: 220px;
+    max-height: 400px;
+    min-height: 50px;
     background-color: #383838;
-    overflow: scroll; }
+    border-radius: 5px;
+    overflow: scroll;
+    direction: rtl; }
     #shrub-injection-frame #shrub-browser .shrub-browser-link {
-      font-family: "Ubuntu Bold";
+      font-family: "Ubuntu Light Italic";
       width: 100%;
-      height: 25px;
+      height: 50px;
+      font-size: 15px;
+      color: #aaa;
       display: flex;
       align-items: center;
-      font-size: 15px;
-      color: #ff0;
-      padding: 3px; }
-      #shrub-injection-frame #shrub-browser .shrub-browser-link p {
-        float: right; }
-    #shrub-injection-frame #shrub-browser .shrub-browser-link:nth-child(even) {
-      background-color: #444; }
+      direction: ltr; }
+      #shrub-injection-frame #shrub-browser .shrub-browser-link .shrub-browser-link-text {
+        margin-right: 10px;
+        text-align: right;
+        margin-left: auto; }
+        #shrub-injection-frame #shrub-browser .shrub-browser-link .shrub-browser-link-text p:nth-child(1) {
+          font-family: "Ubuntu Medium";
+          color: #fff; }
+      #shrub-injection-frame #shrub-browser .shrub-browser-link:hover {
+        background-color: #444;
+        cursor: pointer; }
   #shrub-injection-frame * {
-    padding: 0px; }
+    padding: 0px;
+    margin: 0px; }

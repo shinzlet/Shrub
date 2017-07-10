@@ -1,5 +1,7 @@
 let UI = {
 	elem: function(){return undefined}, // elem is set to a function in initializeUI
+	browser: function(){return undefined},
+	title: function(){return undefined},
 	style: () => {
 		return UI.elem().style;
 	},
@@ -93,4 +95,20 @@ function initializeUI() {
 	UI.elem = () => {
 		return document.getElementById("shrub-injection-frame");
 	};
+
+	UI.title = () => {
+		return document.getElementById("shrub-title-bar");
+	};
+
+	UI.browser = () => {
+		return document.getElementById("shrub-browser");
+	};
+
+	UI.browser().onmouseover = () => {
+		document.body.style.overflow = "hidden";
+	}
+
+	UI.browser().onmouseout = () => {
+		document.body.style.overflow = "scroll";
+	}
 }

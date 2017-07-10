@@ -83,6 +83,8 @@ $link-right-margin: 7px;
 				margin-right: 10px;
 				text-align: right;
 				margin-left: auto;
+				white-space: nowrap;
+				overflow: hidden;
 
 				p:nth-child(1) {
 					font-family: "Ubuntu Medium";

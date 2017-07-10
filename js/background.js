@@ -7,6 +7,7 @@ function Node(par, loc) {
 		children: [],
 		location: loc,
 		parent: par,
+		title: loc,
 		getParent: function() {
 			return this.parent;
 		},
@@ -24,6 +25,12 @@ function Node(par, loc) {
 		},
 		setLocation: function(newLocation) {
 			this.location = newLocation;
+		},
+		setTitle: function(newTitle) {
+			this.title = newTitle;
+		},
+		getTitle: function() {
+			return this.title;
 		}
 	};
 
@@ -61,6 +68,19 @@ chrome.runtime.onMessage.addListener(
 		let name = `${sender.tab.id}`;
 		let url = sender.tab.url;
 		switch(request.action) {
+			case "fetchBranch":
+				response = {nodes: []};
+				let branch = trees[name].getActiveNode();
+				branch.children.forEach((elem) => {
+					response.nodes.push(
+						{
+							name: elem.getTitle(),
+							url: elem.getLocation()
+						}
+					);
+				});
+				sendResponse(response);
+				break;
 			default: break;
 		}
 	}
@@ -70,7 +90,7 @@ chrome.runtime.onMessage.addListener(
 	Creates a new history tree.
 */
 function beginTree(name, url) {
-	trees[name] = new Tree( new Node(undefined, url) );
+	trees[name] = new Tree( new Node(undefined, url, url) );
 }
 
 /*
@@ -106,7 +126,7 @@ chrome.tabs.onRemoved.addListener((tab) => {
 		we must check for all client_redirect transitionQualifiers, and if one is detected we have to replace the
 		location of the last node with the new url, rather than appending a node.
 */
-chrome.webNavigation.onCommitted.addListener((tab) => {
+chrome.webNavigation.onCommitted.addListener(function(tab) {
 	let name = `${tab.tabId}`;
 	let url = tab.url;
 	let transition = tab.transitionType;
@@ -118,6 +138,19 @@ chrome.webNavigation.onCommitted.addListener((tab) => {
 		beginTree(name, url);
 		console.log("1 | Tree created");
 		return; // If we let the last half of the code run we risk duplicating this node.
+	}
+
+	if(tree.getActiveNode().children) {
+		let exists = false;
+		tree.getActiveNode().children.forEach(elem => {
+			if(elem.getLocation() === url) { // This page has already been visited
+				tree.setActiveNode(elem);
+				exists = true;
+				return; // This only returns the lambda!
+			}
+		});
+
+		if(exists) return;
 	}
 
 	// This is a bit of a workaround, as chrome doesn't seem to let me tell the difference between forward / back easily (forward is not allowed)
@@ -155,4 +188,13 @@ chrome.webNavigation.onCommitted.addListener((tab) => {
 			console.log("5 | Typed");
 			break;
 	}
+});
+
+chrome.webNavigation.onCompleted.addListener(function(tab) {
+	let node = trees[tab.tabId].getActiveNode();
+	chrome.tabs.get(tab.tabId, t => {
+		let title = t.title;
+		if(title)
+			node.setTitle(title);
+	})
 });

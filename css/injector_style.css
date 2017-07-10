@@ -52,7 +52,9 @@
       #shrub-injection-frame #shrub-browser .shrub-browser-link .shrub-browser-link-text {
         margin-right: 10px;
         text-align: right;
-        margin-left: auto; }
+        margin-left: auto;
+        white-space: nowrap;
+        overflow: hidden; }
         #shrub-injection-frame #shrub-browser .shrub-browser-link .shrub-browser-link-text p:nth-child(1) {
           font-family: "Ubuntu Medium";
           color: #fff;

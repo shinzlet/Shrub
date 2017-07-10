@@ -6,8 +6,7 @@
 	"permissions": [
 		"activeTab",
 		"webNavigation",
-		"http://fonts.googleapis.com/",
-		"https://fonts.googleapis.com/"
+		"tabs"
 	],
 	"icons": {
 		"128": "icons/shrub-icon-128.png",

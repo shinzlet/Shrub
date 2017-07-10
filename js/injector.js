@@ -16,9 +16,10 @@ let UI = {
 
 		UI.visible = !UI.visible;
 	},
-	addLink: function(name, url) {
+	addLink: function(name, url, fullUrl) {
 		var link = document.createElement("div");
 		link.className = "shrub-browser-link";
+		link.setAttribute("data-shrub-path", fullUrl);
 
 		var inner = document.createElement("div");
 		inner.className = "shrub-browser-link-text";
@@ -33,10 +34,13 @@ let UI = {
 		inner.appendChild(loc);
 
 		link.appendChild(inner);
+		link.addEventListener("click", linkClicked, false);
 		UI.browser().appendChild(link);
 	},
 	visible: false,
-	hover: false
+	hover: false,
+	maxNameLength: 30,
+	maxUrlLength: 30
 }
 
 function KeyHandler(keyNames, callback) {
@@ -90,6 +94,7 @@ document.body.addEventListener("click", function() { // If the user clicks outsi
 	}
 });
 
+
 // Loads ui from ui.html, then sends the html string into the injector to put it into the page
 function buildUI() {
 	{
@@ -138,4 +143,38 @@ function initializeUI() {
 		document.body.style.overflow = "scroll";
 		UI.hover = false;
 	}
+
+	if(document.readyState == "complete") {
+		populateUI();
+	} else {
+		window.addEventListener("load", populateUI);
+	}
+}
+
+function populateUI() {
+	chrome.runtime.sendMessage(
+		{action: "fetchBranch"},
+		function(response) {
+			if(response.nodes) {
+				response.nodes.forEach(elem => {
+					let name = elem.name;
+					let url = elem.url;
+
+					if(name.length > UI.maxNameLength) {
+						name = name.substring(0, UI.maxNameLength - 3) + "...";
+					}
+
+					let len = url.length;
+					if(len > UI.maxUrlLength) {
+						url = "..." + url.substring(len - UI.maxUrlLength - 3, len)
+					}
+					UI.addLink(name, url, elem.url);
+				});
+			}
+		}
+	);
+}
+
+function linkClicked() {
+	window.location = this.getAttribute("data-shrub-path");
 }

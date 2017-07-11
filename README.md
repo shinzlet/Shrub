@@ -9,3 +9,9 @@ subdirectory you've visited on a page, and navigate to any of them with one clic
 
 # Screenshots
 ![Shrub's history menu.](http://i.imgur.com/gFr2bzH.png "Shrub's history menu, brought up by pressing both alt keys.")
+
+# Non-destructive Navigation
+Shrub has benefits, but it also comes with some limitations of it's own. None of these impede regular browsing, but there
+are some conditions that cause Shrub to break down.
+For example, when the user enters a URL, Shrub will delete the history tree of the previous pages. Why? Shrub is designed
+to keep true to linking structure, and as a URL is not a page link, it would violate the authenticity of a tree. In future versions, I intend to have Shrub save the tree instead of deleting it, allowing the user to return to a "dead" tree later on.

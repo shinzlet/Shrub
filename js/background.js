@@ -166,9 +166,10 @@ chrome.webNavigation.onCommitted.addListener(function(tab) {
 			console.log("2 | Backed up");
 		} else {
 			// This only happens when the user decides to go forwards or back beyond the tree root.
-			delete trees[name]; // The tree is dead, now. Are you happy?
-			beginTree(name, url); // We still want a tree, though.
-			console.log("3 | Deleted tree");
+			// TODO: This is not a fix, I just replaced one bug with a slightly less intrusive one. Don't judge me.
+			// delete trees[name]; // The tree is dead, now. Are you happy?
+			// beginTree(name, url); // We still want a tree, though.
+			// console.log("3 | Deleted tree");
 		}
 
 		return; // the transition is either 'link' or 'typed', so we aren't going to risk node duplication / removal

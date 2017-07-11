@@ -108,7 +108,7 @@ chrome.tabs.onCreated.addListener((tab) => {
 	just deletes the stray tree.
 */
 chrome.tabs.onRemoved.addListener((tab) => {
-	let name = `${tab.id}`;
+	let name = `${tab}`;
 	delete trees[name];
 });
 

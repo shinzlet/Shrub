@@ -26,5 +26,9 @@
 	"web_accessible_resources": [
 		"html/*",
 		"/font/*"
-	]
+	],
+	"browser_action": {
+		"default_title": "Shrub",
+		"default_popup": "html/popup.html"
+	}
 }

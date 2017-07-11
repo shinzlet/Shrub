@@ -8,4 +8,4 @@ Shrub is a small extension that aims to do this better. With Shrub installed, yo
 subdirectory you've visited on a page, and navigate to any of them with one click.
 
 # Screenshots
-![Shrub's history menu.](http://imgur.com/a/mSS5i "Shrub's history menu, brought up by pressing both alt keys.")
+![Shrub's history menu.](http://i.imgur.com/gFr2bzH.png "Shrub's history menu, brought up by pressing both alt keys.")

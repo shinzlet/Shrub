@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Shrub",
-	"version": "0.8.0",
+	"version": "1.0.0",
 	"description": "Allows for tree-based history storage.",
 
 	"permissions": [

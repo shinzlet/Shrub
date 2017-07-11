@@ -10,19 +10,20 @@
 
 $frame-width: 250px;
 $frame-radius: 5px;
+$frame-color: rgba(0, 0, 0, 0.5);
 
-$highlight-color: #00F8FF;
-$frame-color: rgba(0, 0, 0, 0.6);
+$highlight-color: #18FF00;
+$title-color: #fff;
 $link-text-color: #aaa;
-$link-title-color: #fff;
-$browser-color: #383838;
+$link-title-color: #666;
+$browser-color: #eee;
 
 $title-bar-height: 30px;
 $title-size: 20px;
 $version-font-size: 15px;
 $link-height: 45px;
 $browser-height: 3.5 * $link-height; // If it's a whole multiple it isn't clear that the box is scrollable
-$link-highlight-color: #444;
+$link-highlight-color: #333;
 $link-font-size: 15px;
 $link-right-margin: 7px;
 
@@ -32,7 +33,6 @@ $link-right-margin: 7px;
 	top: 50px;
 	left: 50px;
 	border-radius: $frame-radius;
-	overflow: hidden;
 	z-index: -99;
 	visibility: hidden;
 	width: $frame-width;
@@ -41,7 +41,7 @@ $link-right-margin: 7px;
 	#shrub-title-bar {
 		width: 100%;
 		height: $title-bar-height;
-		color: $highlight-color;
+		color: $title-color;
 		font-size: $title-size;
 		display: flex;
 		align-items: center;
@@ -97,6 +97,10 @@ $link-right-margin: 7px;
 			&:hover {
 				background-color: $link-highlight-color;
 				cursor: pointer;
+
+				.shrub-link-header {
+					color: $highlight-color;
+				}
 			}
 		}
 	}

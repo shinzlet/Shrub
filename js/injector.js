@@ -26,6 +26,7 @@ let UI = {
 
 		var title = document.createElement("p");
 		title.innerHTML = name;
+		title.className = "shrub-link-header";
 
 		var loc = document.createElement("p");
 		loc.innerHTML = url;
@@ -155,7 +156,7 @@ function populateUI() {
 	chrome.runtime.sendMessage(
 		{action: "fetchBranch"},
 		function(response) {
-			if(response.nodes) {
+			if(response.nodes && response.nodes.length > 0) {
 				response.nodes.forEach(elem => {
 					let name = elem.name;
 					let url = elem.url;
@@ -170,6 +171,16 @@ function populateUI() {
 					}
 					UI.addLink(name, url, elem.url);
 				});
+			} else {
+				let block = document.createElement("div");
+				block.className = "shrub-browser-link";
+				let text = document.createElement("div");
+				text.className = "shrub-browser-link-text";
+				let message = document.createElement("p");
+				message.innerHTML = "Nothing here yet!";
+				text.appendChild(message);
+				block.appendChild(text);
+				UI.browser().appendChild(block);
 			}
 		}
 	);

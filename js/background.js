@@ -150,7 +150,10 @@ chrome.webNavigation.onCommitted.addListener(function(tab) {
 			}
 		});
 
-		if(exists) return;
+		if(exists) {
+			console.log("1.5 | Safe forward");
+			return;
+		}
 	}
 
 	// This is a bit of a workaround, as chrome doesn't seem to let me tell the difference between forward / back easily (forward is not allowed)

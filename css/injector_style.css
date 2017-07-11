@@ -53,9 +53,8 @@
         margin-right: 10px;
         text-align: right;
         margin-left: auto;
-        white-space: nowrap;
-        overflow: hidden; }
-        #shrub-injection-frame #shrub-browser .shrub-browser-link .shrub-browser-link-text p:nth-child(1) {
+        white-space: nowrap; }
+        #shrub-injection-frame #shrub-browser .shrub-browser-link .shrub-browser-link-text .shrub-link-header {
           font-family: "Ubuntu Medium";
           color: #fff;
           margin-bottom: -3px; }

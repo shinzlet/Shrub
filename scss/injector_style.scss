@@ -84,9 +84,8 @@ $link-right-margin: 7px;
 				text-align: right;
 				margin-left: auto;
 				white-space: nowrap;
-				overflow: hidden;
 
-				p:nth-child(1) {
+				.shrub-link-header {
 					font-family: "Ubuntu Medium";
 					color: $link-title-color;
 					margin-bottom: -3px;

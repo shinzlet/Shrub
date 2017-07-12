@@ -25,6 +25,7 @@ $link-height: 45px;
 $browser-height: 3.5 * $link-height; // If it's a whole multiple it isn't clear that the box is scrollable
 $link-highlight-color: #333;
 $link-font-size: 15px;
+$url-font-size: 12px;
 $link-right-margin: 7px;
 
 #shrub-injection-frame {
@@ -68,20 +69,18 @@ $link-right-margin: 7px;
 		max-height: $browser-height;
 		min-height: $link-height;
 		background-color: $browser-color;
-		border-radius: $frame-radius;
-		overflow-y: scroll;
-		overflow-x: hidden;
-		direction: rtl;
+		border-radius: $frame-radius $frame-radius 0 0;
 
 		.shrub-browser-link {
 			font-family: "Ubuntu Light Italic";
 			width: 100%;
 			height: $link-height;
-			font-size: $link-font-size;
 			color: $link-text-color;
 			display: flex;
 			align-items: center;
 			direction: ltr;
+			font-size: $url-font-size;
+			-webkit-font-smoothing: subpixel-antialiased; // This works better cause the URL font is tiny
 
 			.shrub-browser-link-text {
 				margin-right: 10px;
@@ -90,9 +89,10 @@ $link-right-margin: 7px;
 				white-space: nowrap;
 
 				.shrub-link-header {
+					-webkit-font-smoothing: antialiased;
 					font-family: "Ubuntu Medium";
 					color: $link-title-color;
-					margin-bottom: -3px;
+					font-size: $link-font-size;
 				}
 			}
 

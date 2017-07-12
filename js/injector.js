@@ -41,7 +41,8 @@ let UI = {
 	visible: false,
 	hover: false,
 	maxNameLength: 30,
-	maxUrlLength: 30
+	maxUrlLength: 30,
+	scrollLockPosition: 0
 }
 
 function KeyHandler(keyNames, callback) {
@@ -89,12 +90,18 @@ buildUI();
 
 // Event listeners:
 new KeyHandler(["AltLeft", "AltRight"], UI.toggle);
+
 document.body.addEventListener("click", function() { // If the user clicks outside of the interface, close it
 	if(UI.visible && !UI.hover) {
 		UI.toggle();
 	}
 });
 
+window.addEventListener("scroll", () => {
+	if(UI.hover) {
+		document.body.scrollTop = UI.scrollLockPosition;
+	}
+});
 
 // Loads ui from ui.html, then sends the html string into the injector to put it into the page
 function buildUI() {
@@ -136,12 +143,11 @@ function initializeUI() {
 	};
 
 	UI.browser().onmouseover = () => {
-		document.body.style.overflow = "hidden";
 		UI.hover = true;
+		UI.scrollLockPosition = document.body.scrollTop;
 	}
 
 	UI.browser().onmouseout = () => {
-		document.body.style.overflow = "scroll";
 		UI.hover = false;
 	}
 

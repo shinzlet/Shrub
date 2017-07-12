@@ -196,6 +196,7 @@ chrome.webNavigation.onCommitted.addListener(function(tab) {
 			// }
 			break;
 		case "typed":
+		case "generated":
 			delete trees[name]; // Manually navigating away from the tree severs it from the structure
 			beginTree(name, url);
 			console.log("5 | Typed");

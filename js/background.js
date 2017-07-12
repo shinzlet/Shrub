@@ -172,6 +172,8 @@ chrome.webNavigation.onCommitted.addListener(function(tab) {
 			tree.setActiveNode(parent); // All we have to do is step back.
 			console.log("2 | Backed up");
 		} else {
+			console.log(tab);
+			console.log(tree);
 			// This only happens when the user decides to go forwards somewhere new or back beyond the tree root.
 			delete trees[name]; // The tree is dead, now. Are you happy?
 			beginTree(name, url); // We still want a tree, though.

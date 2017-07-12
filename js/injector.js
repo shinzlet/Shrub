@@ -41,8 +41,7 @@ let UI = {
 	visible: false,
 	hover: false,
 	maxNameLength: 30,
-	maxUrlLength: 30,
-	scrollLockPosition: 0
+	maxUrlLength: 30
 }
 
 function KeyHandler(keyNames, callback) {
@@ -97,12 +96,6 @@ document.body.addEventListener("click", function() { // If the user clicks outsi
 	}
 });
 
-window.addEventListener("scroll", () => {
-	if(UI.hover) {
-		document.body.scrollTop = UI.scrollLockPosition;
-	}
-});
-
 // Loads ui from ui.html, then sends the html string into the injector to put it into the page
 function buildUI() {
 	{
@@ -144,11 +137,12 @@ function initializeUI() {
 
 	UI.browser().onmouseover = () => {
 		UI.hover = true;
-		UI.scrollLockPosition = document.body.scrollTop;
+		document.body.style.overflow = "hidden";
 	}
 
 	UI.browser().onmouseout = () => {
 		UI.hover = false;
+		document.body.style.overflow = "scroll";
 	}
 
 	if(document.readyState == "complete") {

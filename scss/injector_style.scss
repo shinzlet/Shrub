@@ -70,6 +70,9 @@ $link-right-margin: 7px;
 		min-height: $link-height;
 		background-color: $browser-color;
 		border-radius: $frame-radius $frame-radius 0 0;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		box-sizing: border-box;
 
 		.shrub-browser-link {
 			font-family: "Ubuntu Light Italic";

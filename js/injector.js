@@ -160,16 +160,33 @@ function UI(ops) {
 
 /*
 	bindShortcut:
-
+		takes an array of key event codes and a callback function. When all the keys are pressed,
+		the function is called.
 */
 function bindShortcut(ops) {
 	if(!ops.callback || !ops.keys) return -1;
+
 	({
 		keystates: [],
+		toggleKey: function(code, state) {
+			let index = ops.keys.indexOf(code);
+			if(index === -1) return false;
+			this.keystates[index] = state;
+			return true;
+		},
 		init: function() {
 			this.keystates = ops.keys.map(() => false); // Fills 'keystates' with false, and makes it's length equal to the key count
-			
+			let ctx = this; // We need a reference to this context
 
+			document.body.addEventListener('keydown', function(e) {
+				if(ctx.toggleKey(e.code, true) && ctx.keystates.every(elem => elem) && ctx.keystates[0]) {
+					ops.callback();
+				}
+			});
+
+			document.body.addEventListener('keyup', function(e) {
+				ctx.toggleKey(e.code, false);
+			});
 		}
 	}).init();
 }

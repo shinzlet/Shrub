@@ -34,8 +34,6 @@ $link-right-margin: 7px;
 	top: 50px;
 	left: 50px;
 	border-radius: $frame-radius;
-	z-index: -99;
-	visibility: hidden;
 	width: $frame-width;
 	background-color: $frame-color;
 	overflow: hidden;
@@ -68,7 +66,15 @@ $link-right-margin: 7px;
 		width: 100%;
 		max-height: $browser-height;
 		min-height: $link-height;
-		background-color: $browser-color;
+		background: repeating-linear-gradient(
+		  45deg,
+		  $frame-color,
+		  $frame-color 10px,
+		  $highlight-color 10px,
+		  $highlight-color 20px,
+			$browser-color 20px,
+			$browser-color 30px
+		);
 		border-radius: $frame-radius $frame-radius 0 0;
 		overflow-y: scroll;
 		overflow-x: hidden;
@@ -82,6 +88,7 @@ $link-right-margin: 7px;
 			display: flex;
 			align-items: center;
 			direction: ltr;
+			background-color: $browser-color;
 			font-size: $url-font-size;
 			-webkit-font-smoothing: subpixel-antialiased; // This works better cause the URL font is tiny
 
@@ -113,6 +120,7 @@ $link-right-margin: 7px;
 	* {
 		padding: 0px;
 		margin: 0px;
+		line-height: 1.2em;
 	}
 
 	::-webkit-scrollbar {

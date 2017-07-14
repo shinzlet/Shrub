@@ -33,35 +33,44 @@ document.addEventListener("DOMContentLoaded", function() {
 		and later on acts as a delegate for interaction.
 */
 function UI(ops) {
-	if(!ops) ops = {maxNameLength: 30, maxUrlLength: 30};
+	if(!ops) ops = {maxNameLength: 30, maxUrlLength: 30, visible: false, minZ: -1e6, maxZ: 1e6};
 
+	// Configurable variables
 	this.maxNameLength = ops.maxNameLength;
 	this.maxUrlLength = ops.maxUrlLength;
+	this.visible = ops.visible;
+	this.minZ = ops.minZ;
+	this.maxZ = ops.maxZ;
+
 	this.frame = undefined;
 	this.browser = undefined;
 	this.bound = false;
+	this.hoverState = false;
 	this.content = {}; // will contains links and html.
 
 	/*
 		UI.load:
 			Loads content required to assemble the Shrub UI. (links & interface)
+			If XML has already been loaded, it will not reload. This means that
+			load can also be called multiple times to reload the links.
 	*/
 	this.load = function(ops) {
 		if(!ops || !ops.callback) return -1; // If ops is undefined later on, it'll throw an error.
 
 		let context = this; // required to get access 'this' from the correct scope later
 
-		// This will load the file 'html/ui.html' into 'content', where it can later be used.
-		loadXML({
-			callback: function(response) {
-				context.content.html = response;
-				// If the links are also loaded, we can progress to the next assembly step.
-				if(context.content.links) {
-					ops.callback.call(context);
-				}
-			},
-			path: "/html/ui.html"
-		});
+		if(!this.content.html) {// This will load the file 'html/ui.html' into 'content', where it can later be used.
+			loadXML({
+				callback: function(response) {
+					context.content.html = response;
+					// If the links are also loaded, we can progress to the next assembly step.
+					if(context.content.links) {
+						ops.callback.call(context);
+					}
+				},
+				path: "/html/ui.html"
+			});
+		}
 
 		// This asks background.js for the links we want to display, and stores them in 'content'.
 		fetchLinks({
@@ -89,6 +98,19 @@ function UI(ops) {
 		for(var n = 0; n < this.frame.children.length; n++)
 			if(this.frame.children[n].id === 'shrub-browser') this.browser = this.frame.children[n];
 
+		let ctx = this;
+
+		this.browser.onmouseover = function() { // Due to bind running asynchronously, this cannot be called from it.
+			ctx.hoverState = true;
+			if(document.body) document.body.style.overflow = 'hidden';
+		}
+
+		this.browser.onmouseout = function() {
+			ctx.hoverState = false;
+			if(document.body) document.body.style.overflow = 'scroll';
+		}
+
+		this.toggle(this.visible); // We want the UI to be in the right state when this starts.
 		this.buildLinks();
 	};
 	/*
@@ -97,6 +119,11 @@ function UI(ops) {
 			content.links.
 	*/
 	this.buildLinks = function() {
+		// First, we have to purge our existing links:
+		while(this.browser.lastChild) { // While children exist, remove them.
+			this.browser.removeChild(this.browser.lastChild);
+		}
+
 		this.content.links.forEach((elem) => {
 			this.addLink(elem.name, elem.url);
 		});
@@ -112,11 +139,12 @@ function UI(ops) {
 		let cutUrl = document.createElement('p');
 		let length = url.length;
 
-		link.setAttribute('id', 'shrub-browser-link');
+		link.setAttribute('class', 'shrub-browser-link');
 		link.setAttribute('shrub-data-path', url);
-		text.setAttribute('id', 'shrub-browser-link-text');
+		text.setAttribute('class', 'shrub-browser-link-text');
+		header.setAttribute('class', 'shrub-link-header');
 		header.innerHTML = name.length < this.maxNameLength ? name : (name.substring(0, this.maxNameLength - 3) + "...");
-		cutUrl.innerHTML = length < this.maxUrlLength ? name : ("..." + name.substring(length - this.maxUrlLength + 3, length));
+		cutUrl.innerHTML = length < this.maxUrlLength ? url : ("..." + url.substring(length - this.maxUrlLength + 3, length));
 
 		text.appendChild(header);
 		text.appendChild(cutUrl);
@@ -135,7 +163,18 @@ function UI(ops) {
 	this.bind = function(ops) {
 		if(!ops || !ops.callback) return; // We need to have a callback so that we can try to inject the ui after binding.
 
+		let ctx = this; // We need a context later to call toggle on.
 
+		bindShortcut({
+			keys: ['AltLeft', 'AltRight'],
+			callback: () => this.toggle.call(ctx)
+		});
+
+		document.addEventListener('click', function() {
+			if(!ctx.hoverState) {
+				ctx.toggle(false);
+			}
+		});
 
 		this.bound = true;
 		ops.callback();
@@ -145,6 +184,7 @@ function UI(ops) {
 			Injects the assembled content into the parent element (probably 'document.body').
 	*/
 	this.inject = function(parent) {
+		console.log(this.frame);
 		if(parent) { // If the page isn't loaded when inject is called, it won't do anything (parent will be undefined)
 			parent.appendChild(this.frame); // Inject the injection frame into the parent.
 		}
@@ -154,7 +194,22 @@ function UI(ops) {
 			Standard link followthrough implementation.
 	*/
 	this.clickHandler = function() {
-		console.log(this);
+		location.href = this.getAttribute('shrub-data-path');
+	};
+	/*
+		UI.toggle:
+			Optionally takes the toggle state. Changes the UI visibility.
+	*/
+	this.toggle = function(state) {
+		if(state === undefined) state = !this.visible;
+		this.visible = state;
+		if(state) {
+			this.frame.style.zIndex = this.maxZ;
+			this.frame.style.visibility = 'visible';
+		} else {
+			this.frame.style.zIndex = this.minZ;
+			this.frame.style.visibility = 'hidden';
+		}
 	};
 }
 
@@ -178,13 +233,13 @@ function bindShortcut(ops) {
 			this.keystates = ops.keys.map(() => false); // Fills 'keystates' with false, and makes it's length equal to the key count
 			let ctx = this; // We need a reference to this context
 
-			document.body.addEventListener('keydown', function(e) {
+			document.addEventListener('keydown', function(e) {
 				if(ctx.toggleKey(e.code, true) && ctx.keystates.every(elem => elem) && ctx.keystates[0]) {
 					ops.callback();
 				}
 			});
 
-			document.body.addEventListener('keyup', function(e) {
+			document.addEventListener('keyup', function(e) {
 				ctx.toggleKey(e.code, false);
 			});
 		}

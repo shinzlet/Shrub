@@ -1,6 +1,4 @@
-![Shrub logo](https://github.com/shinzlet/Shrub/blob/master/icons/shrub-icon-128.png?raw=true "Shrub logo")
-
-# Shrub
+# Shrub <img src="https://github.com/shinzlet/Shrub/blob/master/icons/shrub-icon-128.png?raw=true" width="1em">
 A chrome extension providing a tree based browsing history.
 
 # Important Note

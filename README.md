@@ -1,5 +1,7 @@
+![Shrub logo](https://github.com/shinzlet/Shrub/blob/master/icons/shrub-icon-128.png?raw=true "Shrub logo")
+
 # Shrub
-![Shrub logo](https://github.com/shinzlet/Shrub/blob/master/icons/shrub-icon-128.png?raw=true "Shrub logo")A chrome extension providing a tree based browsing history.
+A chrome extension providing a tree based browsing history.
 
 # Important Note
 I had the idea for Shrub a few months prior to beginning it's development. In the interim, I forgot several

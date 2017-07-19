@@ -184,7 +184,8 @@ function UI(ops) {
 			Injects the assembled content into the parent element (probably 'document.body').
 	*/
 	this.inject = function(parent) {
-		if(parent) { // If the page isn't loaded when inject is called, it won't do anything (parent will be undefined)
+		if(parent && this.frame) { // If the page isn't loaded when inject is called, it won't do anything (parent will be undefined)
+															 // The same is true if the frame isn't loaded yet.
 			parent.appendChild(this.frame); // Inject the injection frame into the parent.
 		}
 	};

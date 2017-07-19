@@ -1,6 +1,14 @@
 # Shrub
 A chrome extension providing a tree based browsing history.
 
+# Important Note
+I had the idea for Shrub a few months prior to beginning it's development. In the interim, I forgot several
+key aspects of it's functionality. Only after talking to a friend with better memory than I did I realize that
+what I've been writing this whole time isn't what I meant to write. That said, I think that this version of shrub
+might have it's uses as a more lightweight experience. Considering that what I intended to create is going to
+require a full rewrite regardless, I've decided to patch Shrub up and just let it exist in case anybody wants it.
+I'm going to develop the other extension as well, under a different name (which I'll link to when I create it).
+
 # How It Works
 In a conventional browser, history is very linear. If you start on some root page, and navigate to several
 of it's children, the browser will only let you press forward (or backward) into the most recent of those pages.

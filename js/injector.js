@@ -183,7 +183,7 @@ function UI(ops) {
 		UI.inject:
 			Injects the assembled content into the parent element (probably 'document.body').
 	*/
-	this.inject = function(parent) {
+	thcis.inject = function(parent) {
 		console.log(this.frame);
 		if(parent) { // If the page isn't loaded when inject is called, it won't do anything (parent will be undefined)
 			parent.appendChild(this.frame); // Inject the injection frame into the parent.

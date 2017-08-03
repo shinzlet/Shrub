@@ -9,6 +9,8 @@ might have it's uses as a more lightweight experience. Considering that what I i
 require a full rewrite regardless, I've decided to patch Shrub up and just let it exist in case anybody wants it.
 I'm going to develop the other extension as well, under a different name (which I'll link to when I create it).
 
+Edit: <a href="https://github.com/shinzlet/Hopscotch">Here's Hopscotch!</a>
+
 # How It Works
 In a conventional browser, history is very linear. If you start on some root page, and navigate to several
 of it's children, the browser will only let you press forward (or backward) into the most recent of those pages.
